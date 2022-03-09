@@ -1,0 +1,42 @@
+<%- include('dashboard') %>
+
+<style>
+   
+</style>
+<center>
+    <div class="container">
+        <div class="col-md-20">
+            <table class="table table-bordered table-hover table-striped" style="overflow-x:auto;">
+                <thead>
+                    <tr>
+                        <th>
+                            User ID
+                        </th>
+                        <th>
+                            User Name
+                        </th>
+                        <th>
+                            User Join Date
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--for each  -->
+                    <% for (var i=0; i < locals.users.length; i++) { %>
+                        <tr>
+                            <td>
+                                <%= locals.users[i].id %>
+                            </td>
+                            <td>
+                                <%= locals.users[i].username %>
+                            </td>
+                            <td>
+                                <%= locals.users[i].created_at %>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</center>

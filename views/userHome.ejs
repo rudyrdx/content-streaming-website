@@ -1,0 +1,57 @@
+<%- include('dashboard') %> 
+
+<style>
+    .container {
+        display: flex;
+    }
+</style>
+<div class="container">
+    <h1>
+        Home of <%= locals.session.username %>
+    </h1>
+    <% if(locals.history) { %> 
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-bar-chart-o fa-fw"></i>
+                            Watch History of <%= locals.session.username %> 
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive ">
+                            <table class="table table-bordered table-hover table-striped" style="overflow-x:auto;">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Video ID
+                                        </th>
+                                        <th>
+                                            Video Name
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--for each  -->
+                                    <% for (var i = 0; i < locals.history.length; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <%= locals.history[i].vid %>
+                                        </td>
+                                        <td>
+                                            <%= locals.videos[i].uid %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>

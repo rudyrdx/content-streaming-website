@@ -1,0 +1,48 @@
+<style>
+    /*set the row divisions to align in centre of the page*/
+
+    .container {
+        margin-top: 10px;
+        /* show im middle and only 4 tags per row */
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        /* set the width of the tags to be equal */
+        width: 100%;
+    }
+</style>
+<script>
+</script>
+<div class="container">
+   <!-- <form action="/" method="post">
+       <select name="order" id="">
+        <option value="asc">oldest first</option>
+        <option value="desc">newest first</option>
+       </select>
+         <input type="submit" value="sort">
+   </form> -->
+   SORT BY &nbsp;
+   <a href="/i/1">new</a>
+   &nbsp;&nbsp;
+   <a href="/i/2">old</a>
+
+</div>
+<div class="container">
+
+    <% for(var i=0; i < locals.videos.length; i++) { %>
+        <div class="col-lg-3">
+            <div class="card box-shadow">
+                <img class="card-img-top" height="200" src="<%= locals.videos[i].thumbnail %>" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= locals.videos[i].title %>
+                    </h5>
+                    <p class="card-text">
+                        <%= locals.videos[i].description %>
+                    </p>
+                    <a href="/video/<%= locals.videos[i].id %> " class="btn btn-primary">Watch</a>
+                </div>
+            </div>
+        </div>
+        <% } %>
+</div>
