@@ -18,6 +18,9 @@
                         <th>
                             User Join Date
                         </th>
+                        <th>
+                           Edit
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,6 +35,9 @@
                             </td>
                             <td>
                                 <%= locals.users[i].created_at %>
+                            </td>
+                            <td>
+                                <a href="/dashboard/edit/<%= locals.users[i].id %>"><i class="fas fa-edit"></i></a>
                             </td>
                         </tr>
                         <% } %>

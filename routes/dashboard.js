@@ -87,7 +87,7 @@ router.get('/adminVideos', (req, res) => {
     if(req.session.username != 'admin') return res.redirect('/userVideos');
     req.session.pagetitle = 'adminVideos';
     const conn  = new Promise((resolve, reject) => {
-        connection.query(`SELECT * FROM videos`, (err, result) => {
+        connection.query(`SELECT v.id, v.title, v.description, v.location, v.createdAt, u.username from videos v, users u where v.uid = u.id`, (err, result) => {
             if (err) {
                 reject(err);
             } else {
@@ -129,4 +129,28 @@ router.get('/adminUsers', (req, res) => {
   
 });
 
+router.get('/edit/:id', (req, res) => {
+    if(!req.session.loggedin) return res.redirect('/login');
+    if(req.session.username != 'admin') return res.redirect('/userHome');
+    req.session.pagetitle = 'editpage';
+    const param = req.params.id;
+    const conn  = new Promise((resolve, reject) => {
+        connection.query(`SELECT * FROM users where id = ${param}`, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+    try {
+        conn.then((result) => {
+            console.table(result);
+            res.render('edituser', { users: result, session: req.session });
+        });
+    } catch (err) {
+        console.log(err);
+    }
+  
+});
 module.exports = router;

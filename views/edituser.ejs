@@ -1,0 +1,28 @@
+<%- include('dashboard') %>
+<h1>this is the edit page of user <%= locals.users[0].username %></h1>
+
+<style>
+  
+    .editor {
+        
+        width: 20px;
+        height: 100%;
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-size: 14px;
+        line-height: 18px;
+        border-radius: 5px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        margin: 0 auto;
+    }
+</style>
+<!-- make a delete user form -->
+<form action="/deleteuser" method="post" class="editor">
+    <input type="hidden" name="id" value="<%= locals.users[0].id %>">
+    <input type="submit" value="Delete User">
+</form>
+<form action="/deleteuser" method="post" class="editor">
+    <input type="hidden" name="id" value="<%= locals.users[0].id %>">
+    <input type="submit" value="Timeout User">
+</form>
