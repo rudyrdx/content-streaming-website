@@ -7,6 +7,8 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(fileupload({
+    //limit the size of uploads to 20MB
+    limits: { fileSize: 20 * 1024 * 1024 },
     useTempFiles: true,
     tempFileDir: "/tmp/"
 }));

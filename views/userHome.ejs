@@ -1,14 +1,26 @@
 <%- include('dashboard') %> 
 
 <style>
-    .container {
-        display: flex;
-    }
+
 </style>
 <div class="container">
+    <br>
     <h1>
         Home of <%= locals.session.username %>
     </h1>
+    <br>
+    <h5>
+        Sentiment Score: (<%= locals.senti %>)
+        <% if(locals.session.sentiment > 0.0) { %> 
+            <i class="fas fa-smile"></i>
+        <% } else if(locals.session.sentiment < 0.0) { %>
+            <i class="fas fa-frown"></i>
+        <% } else { %>
+            <i class="fas fa-meh"></i>
+        <% } %>
+        
+
+    </h5>
     <% if(locals.history) { %> 
     <div class="container">
         <div class="row">
@@ -26,10 +38,10 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            Video ID
+                                            Video name
                                         </th>
                                         <th>
-                                            Video Name
+                                            time
                                         </th>
                                     </tr>
                                 </thead>
@@ -38,10 +50,10 @@
                                     <% for (var i = 0; i < locals.history.length; i++) { %>
                                     <tr>
                                         <td>
-                                            <%= locals.history[i].vid %>
+                                            <%= locals.history[i].title %>
                                         </td>
                                         <td>
-                                            <%= locals.videos[i].uid %>
+                                            <%= locals.history[i].timestamp %>
                                         </td>
                                     </tr>
                                     <% } %>
@@ -54,4 +66,5 @@
         </div>
     </div>
     <% } %>
+
 </div>

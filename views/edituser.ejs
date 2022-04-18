@@ -17,12 +17,17 @@
         margin: 0 auto;
     }
 </style>
-<!-- make a delete user form -->
-<form action="/deleteuser" method="post" class="editor">
+<!-- delete user form -->
+<form action="/dashboard/deleteuser" method="post" class="editor">
     <input type="hidden" name="id" value="<%= locals.users[0].id %>">
     <input type="submit" value="Delete User">
 </form>
-<form action="/deleteuser" method="post" class="editor">
+<hr>
+<form action="/dashboard/updateuser" method="post" class="editor">
     <input type="hidden" name="id" value="<%= locals.users[0].id %>">
-    <input type="submit" value="Timeout User">
+    <input type="text" name="username" value="<%= locals.users[0].username %>">
+    <input type="text" name="opassword" placeholder="enter old password">
+    <input type="text" name="npassword" placeholder="enter new password">
+    <input type="text" name="email" value="<%= locals.users[0].email %>">
+    <input type="submit" value="Update user">
 </form>

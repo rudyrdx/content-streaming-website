@@ -47,6 +47,7 @@ router.post('/', async (req, res) => {
                     req.session.username = result[0].username;
                     req.session.email = result[0].email;
                     req.session.userid = result[0].id;
+                    req.session.created_at = result[0].created_at;
                     res.redirect('/i');
                 } else {
                     req.session.error = 'Wrong password';

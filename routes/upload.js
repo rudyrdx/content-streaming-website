@@ -3,9 +3,10 @@ const mime = require('mime-types');
 const fs = require('fs');
 const mysql = require('mysql');
 var exec = require('child_process').exec;
+const spawn = require('child_process').spawn;
 
 //'video.mp4', 'snapshot.png', '00:00:22', '200x125'
-//make this function a promise
+//promise
 function makeThumb(path, destPath, time, size) {
     return new Promise((resolve, reject) => {
         if (time == null) {
@@ -51,6 +52,15 @@ router.get('/', (req, res) => {
     }
 });
 
+//get ML data
+function getData(firstname) {
+    return new Promise(function (resolve, reject) {
+        var process = spawn('python', ["./Vsent.py", firstname]);
+        process.stdout.on('data', function (data) {
+            resolve(data.toString());
+        })
+    })
+}
 router.post('/', async (req, res) => {
     if (!req.session.loggedin) {
         return res.redirect('/login');
@@ -113,6 +123,7 @@ router.post('/', async (req, res) => {
 
             const conn = new Promise((resolve, reject) => {
                 const newPath = `/uploads/${req.session.userid}/${random + filename}`;
+                req.session.vloc = newPath;
                 const newThumbPath = `/uploads/${req.session.userid}/${random}_thumb.png`;
                 connection.query(`INSERT INTO videos (id, uid, title, location, thumbnail, size, description, createdAt) VALUES(?, ?, ?, ?, ?, ?, ?, ?)`,
                     [null, req.session.userid, title, newPath, newThumbPath, size, description, new Date()], (err, result) => {
@@ -125,8 +136,25 @@ router.post('/', async (req, res) => {
             });
             try {
                 await conn.then((result) => {
-                    req.session.success = 'Video uploaded successfully';
-                    res.redirect('/upload');
+                  req.session.success = "Video uploaded successfully";
+                  getData(req.session.vloc).then(function(data) {
+                    const conns = new Promise((resolve, reject) => {
+                        connection.query(
+                            `INSERT INTO vsentiment (id, vid, score) VALUES(?, ?, ?)`,[null, result.insertId, data],(err, result) => {
+                              if (err) {
+                                reject(err);
+                              } else {
+                                resolve(result);
+                              }
+                          });
+                    });
+                    conns.then((result) => {
+                        console.log("myvideodata: "+data);
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+                  });
+                  res.redirect("/upload");
                 });
             } catch (err) {
                 console.log(err);

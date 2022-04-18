@@ -1,0 +1,33 @@
+<%- include('dashboard') %>
+<h1>this is the edit page of user <%= locals.users[0].username %></h1>
+
+<style>
+  
+    .editor {
+        
+        width: 20px;
+        height: 100%;
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-size: 14px;
+        line-height: 18px;
+        border-radius: 5px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        margin: 0 auto;
+    }
+</style>
+<!-- delete user form -->
+<form action="/dashboard/deleteuserU" method="post" class="editor">
+    <input type="hidden" name="id" value="<%= locals.users[0].id %>">
+    <input type="submit" value="Delete User">
+</form>
+<hr>
+<form action="/dashboard/updateuserU" method="post" class="editor">
+    <input type="hidden" name="id" value="<%= locals.users[0].id %>">
+    <input type="text" name="username" value="<%= locals.users[0].username %>">
+    <input type="text" name="opassword" placeholder="enter old password" required>
+    <input type="text" name="npassword" placeholder="enter new password">
+    <input type="text" name="email" value="<%= locals.users[0].email %>">
+    <input type="submit" value="Update user">
+</form>

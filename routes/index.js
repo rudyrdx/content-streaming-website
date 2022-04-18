@@ -18,12 +18,12 @@ connection.getConnection((err) => {
      console.log('Connected! Index');
 });
 
-router.get('/i/:sort?', (req, res) => {
+router.get('/i/:sort?', async (req, res) => {
      //get a list of all videos from videos table as promises
      req.session.pagetitle = 'index';
      var param = req.params.sort;
      console.log(param);
-     const conn = new Promise((resolve, reject) => {
+     const conn = new Promise(async (resolve, reject) => {
          if(param == 1) {
           connection.query('SELECT * FROM videos ORDER BY createdAt DESC', (err, result) => {
                if (err) {
@@ -35,6 +35,25 @@ router.get('/i/:sort?', (req, res) => {
           
          } else if (param == 2) {
           connection.query('SELECT * FROM videos ORDER BY createdAt ASC', (err, result) => {
+               if (err) {
+                    reject(err);
+               } else {
+                    resolve(result);
+               }
+          });
+
+         } else if (req.session.loggedin && param == 3) {
+              let x = null;
+          connection.query(`select sum(score) / count(score) as avg from usentiment where uid = ${req.session.userid}`, (err, result) => {
+               if (err) {
+                    console.log(err);
+               } else {
+                    x = result[0].avg;
+               }
+          });
+          var sentimentr = x;
+          console.log(sentimentr);
+          connection.query(`SELECT a.* FROM videos a , vsentiment b where a.id = b.vid order by abs(b.score - ${sentimentr})`, (err, result) => {
                if (err) {
                     reject(err);
                } else {
@@ -96,6 +115,27 @@ router.get('/video/:id', (req, res) => {
           //insert user history into the watchHistory table 
           connection.query(`INSERT INTO watchHistory (uid, vid, timestamp) VALUES(?, ?, ?)`,
                [req.session.userid, id, new Date()]);
+
+          //get score of the current video from vsentiment table 
+          connection.query(`SELECT score FROM vsentiment WHERE vid = ${id}`, (err, result) => {
+               if (err) {
+                    console.log(err);
+               } else {
+                   //insert into usentiment table
+                       connection.query(`INSERT INTO usentiment (id, uid, score) VALUES(?, ?, ?)`,
+                               [null, req.session.userid, result[0].score]);
+               }
+          });
+          connection.query(`select sum(score) / count(score) as avg from usentiment where uid = ${req.session.userid}`, (err, result) => {
+               if (err) {
+                    console.log(err);
+               } else {
+
+                    req.session.sentiment = result[0].avg;
+                    console.log(req.session.sentiment);
+               }
+          }
+          );
      }
 });
 

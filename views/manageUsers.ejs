@@ -1,0 +1,45 @@
+<%- include('dashboard') %>
+
+<style>
+
+</style>
+<center>
+    <div class="container">
+        <div class="col-md-20">
+            <table class="table table-bordered table-hover table-striped" style="overflow-x:auto;">
+                <thead>
+                    <tr>
+                        <th>
+                            User Name
+                        </th>
+                        <th>
+                            User Email
+                        </th>
+                        <th>
+                            User Join Date
+                        </th>
+                        <th>
+                           Edit
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <%= locals.session.username %>
+                        </td>
+                        <td>
+                            <%= locals.session.email %>
+                        </td>
+                        <td>
+                            <%= locals.session.created_at %>
+                        </td>
+                        <td>
+                            <a href="/dashboard/editU/<%= locals.session.userid %>"><i class="fas fa-edit"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</center>
